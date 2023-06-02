@@ -1,0 +1,3 @@
+2023-06-02 14:10:42 INFO ====== WebDriver manager ======
+2023-06-02 14:10:43 INFO Driver [C:\Users\mVm\.wdm\drivers\chromedriver\win32\114.0.5735.90\chromedriver.exe] found in cache
+2023-06-02 14:10:44 INFO Starting

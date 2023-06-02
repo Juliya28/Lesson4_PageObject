@@ -1,63 +1,106 @@
 from BaseApp import BasePage
 from selenium.webdriver.common.by import By
 import logging
+import yaml
 
 
 class TestLocators:
-    LOCATOR_LOGIN = (By.XPATH, """//*[@id="login"]/div[1]/label/input""")
-    LOCATOR_PASS = (By.XPATH, """//*[@id="login"]/div[2]/label/input""")
-    LOCATOR_LOGIN_BTN = (By.CSS_SELECTOR, """button""")
-    LOCATOR_CONTACT_BTN = (By.CSS_SELECTOR, """#app > main > nav > ul > li:nth-child(2) > a""")
-    LOCATOR_NAME = (By.XPATH, """//*[@id="contact"]/div[1]/label/input""")
-    LOCATOR_CONTENT = (By.XPATH, """//*[@id="contact"]/div[3]/label/span/textarea""")
-    LOCATOR_EMAIL = (By.XPATH, """//*[@id="contact"]/div[2]/label/input""")
-    LOCATOR_CONTACT_BUTTON = (By.CSS_SELECTOR, """#contact > div.submit > button > span""")
+    ids = dict()
+    with open("locators.yaml") as f:
+        locators = yaml.safe_load(f)
+        
+    for i in locators['xpath'].keys():
+        ids[i] = (By.XPATH, locators['xpath'][i])  
+         
+    for i in locators['css'].keys():
+        ids[i] = (By.CSS_SELECTOR, locators['css'][i])   
+
+
+class Operations(BasePage, TestLocators):
     
-
-
-class Operations(BasePage):
-    def enter_login(self, word):
-        logging.info(f"Send '{word}' to element {TestLocators.LOCATOR_LOGIN[1]}")
-        input1 = self.find_element(TestLocators.LOCATOR_LOGIN)
+    with open('./testdata.yaml') as f:
+        data = yaml.safe_load(f)
+        
+        
+    def enter_login(self):
+        logging.debug('Enter login')
+        input1 = self.find_element(self.ids["LOCATOR_LOGIN"])
         input1.clear()
-        input1.send_keys(word)
-
-    def enter_pass(self, word):
-        logging.info(f"Send '{word}' to element {TestLocators.LOCATOR_PASS[1]}")
-        input2 = self.find_element(TestLocators.LOCATOR_PASS)
+        if input1:
+            input1.send_keys(self.data["username"])
+        else:
+            logging.error('Поле для ввода логина не найдено')
+            
+            
+    def enter_pass(self):
+        logging.debug('Enter password')
+        input2 = self.find_element(self.ids["LOCATOR_PASS"])
         input2.clear()
-        input2.send_keys(word)
+        if input2:
+            input2.send_keys(self.data["password"])
+        else:
+            logging.error('Поле для ввода пароля не найдено')
+            
 
     def click_login_button(self):
-        self.find_element(TestLocators.LOCATOR_LOGIN_BTN).click()
+        logging.debug('Click login button')
+        btn = self.find_element(self.ids['LOCATOR_LOGIN_BTN'])
+        if btn:
+            btn.click()
+        else:
+            logging.error('Кнопка не найдена')
+            
     
     def click_contact_button(self):
-        self.find_element(TestLocators.LOCATOR_CONTACT_BTN).click()
+        logging.debug('Click contuct button')
+        btn2 = self.find_element(self.ids['LOCATOR_CONTACT_BTN'])
+        if btn2:
+            btn2.click()
+        else:
+            logging.error('Кнопка "Contact" не найдена')
+        
 
-    def enter_name(self, word):
-        logging.info(f"Send '{word}' to element {TestLocators.LOCATOR_NAME[1]}")
-        name_field = self.find_element(TestLocators.LOCATOR_NAME)
+    def enter_name(self):
+        logging.debug('Enter name')
+        name_field = self.find_element(self.ids["LOCATOR_NAME"])
         name_field.clear()
-        name_field.send_keys(word)
+        if name_field:
+             name_field.send_keys(self.data["name"])
+        else:
+            logging.error('Поле для ввода пароля имени не найдено')
+           
 
-    def enter_email(self, word):
-        logging.info(f"Send '{word}' to element {TestLocators.LOCATOR_EMAIL[1]}")
-        email_field = self.find_element(TestLocators.LOCATOR_EMAIL)
+    def enter_email(self):
+        logging.debug('Enter email')
+        email_field = self.find_element(self.ids["LOCATOR_EMAIL"])
         email_field.clear()
-        email_field.send_keys(word)
+        if email_field:
+            email_field.send_keys(self.data["email"])
+        else:
+            logging.error('Поле для ввода email имени не найдено')
+    
 
-    def enter_content(self, word):
-        logging.info(f"Send '{word}' to element {TestLocators.LOCATOR_CONTENT[1]}")
-        content_field = self.find_element(TestLocators.LOCATOR_CONTENT)
+    def enter_content(self):
+        logging.debug('Enter content')
+        content_field = self.find_element(self.ids["LOCATOR_CONTENT"])
         content_field.clear()
-        content_field.send_keys(word)
+        if content_field:
+            content_field.send_keys(self.data["content"])
+        else:
+            logging.error('Поле для ввода контента имени не найдено')
+        
 
     def click_contact_button3(self):
-        logging.info('Click button "Contact us"')
-        self.find_element(TestLocators.LOCATOR_CONTACT_BUTTON).click()
+        logging.debug('Click button "Contact us')
+        btn3 = self.find_element(self.ids["LOCATOR_CONTACT_BUTTON"])
+        if btn3:
+            btn3.click()
+        else:
+            logging.error('Кнопка не найдена')
+        
 
     def alllert(self):
-        logging.info("Alert")
+        logging.debug("Alert")
         text = self.alert()
         logging.info(text)
         return text

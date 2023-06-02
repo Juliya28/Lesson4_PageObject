@@ -1,0 +1,11 @@
+xpath:
+  LOCATOR_LOGIN: //*[@id="login"]/div[1]/label/input
+  LOCATOR_PASS: //*[@id="login"]/div[2]/label/input
+  LOCATOR_NAME: //*[@id="contact"]/div[1]/label/input
+  LOCATOR_CONTENT: //*[@id="contact"]/div[3]/label/span/textarea
+  LOCATOR_EMAIL: //*[@id="contact"]/div[2]/label/input
+  LOCATOR_CONTACT_BTN: //*[@id="app"]/main/nav/ul/li[2]/a
+  LOCATOR_CONTACT_BUTTON: //*[@id="contact"]/div[4]/button/span
+
+css:
+  LOCATOR_LOGIN_BTN: button
